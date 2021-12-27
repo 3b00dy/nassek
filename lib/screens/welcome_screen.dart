@@ -1,6 +1,10 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nassek/Provider_classes/daily_advice_provider.dart';
 import 'package:nassek/colors.dart';
+import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatelessWidget {
   WelcomeScreen({Key? key}) : super(key: key);
@@ -44,6 +48,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: heightSize*0.02,),
+
           buildElevatedButton(widthSize,heightSize,
               context, 'تسجيل الدخول', colors.blue, colors.white, 'login'),
           buildElevatedButton(widthSize,heightSize,

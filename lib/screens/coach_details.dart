@@ -5,8 +5,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:nassek/colors.dart';
 
+
 class CoachDetails extends StatelessWidget {
-  CoachDetails({Key? key}) : super(key: key);
+  String coachName, coachDescribe;
+
+  CoachDetails({Key? key, required this.coachName, required this.coachDescribe})
+      : super(key: key);
   AppColors colors = AppColors();
 
   @override
@@ -18,17 +22,26 @@ class CoachDetails extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: colors.blue,
       ),
-      body: Column(
+      body: Stack(
+        alignment: Alignment.bottomCenter,
         children: [
-          SizedBox(
-            child: svg,
-            height: heightSize * 0.4,
-            width: widthSize,
+          Column(
+            children: [
+              SizedBox(height: heightSize*0.02),
+              SizedBox(
+                child: Image.asset('images/man.png'),
+                height: heightSize * 0.4,
+                width: widthSize,
+              ),
+              SizedBox(height: heightSize*0.01),              Text(
+                coachName,
+                style: TextStyle(fontSize: widthSize * 0.06),
+              ),
+            ],
           ),
-           Text('اسم المدرب',style: TextStyle(fontSize: widthSize*0.06),),
-
           Stack(
             alignment: Alignment.bottomCenter,
             children: [
@@ -47,16 +60,16 @@ class CoachDetails extends StatelessWidget {
                     width: widthSize * 1,
                   ),
                   Padding(
-                    padding:  EdgeInsets.all(heightSize*0.03),
-                    child:  Text('هنا يتم عرض تفاصيل المدرب بالكامل',style: TextStyle(
-                      color:colors.black
-
-                    ),),
+                    padding: EdgeInsets.all(heightSize * 0.03),
+                    child: Text(
+                      coachDescribe,
+                      style: TextStyle(color: colors.black),
+                    ),
                   ),
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(widthSize * 0.03),
                 child: buildElevatedButton(widthSize, heightSize, context,
                     'مراسلة المدرب', colors.blue, colors.white, '/'),
               )
@@ -71,7 +84,7 @@ class CoachDetails extends StatelessWidget {
           var color, var labelColor, String navigation) =>
       GestureDetector(
         child: SizedBox(
-            width: width * 0.45,
+            width: width * 0.5,
             height: hieght * 0.09,
             child: ElevatedButton.icon(
               icon: const Icon(Iconsax.message),
@@ -85,7 +98,9 @@ class CoachDetails extends StatelessWidget {
               ),
               label: Text(
                 label,
-                style: TextStyle(color: labelColor, fontSize: hieght * 0.023),
+                style: TextStyle(
+                  color: labelColor,
+                ),
               ),
             )),
       );

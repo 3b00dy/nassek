@@ -509,7 +509,7 @@ class MyDefaultCupertinoLocalizations extends CupertinoLocalizations {
 
   @override
   String tabSemanticsLabel({required int tabIndex, required int tabCount}) {
-    return 'Tab ${tabIndex}, tab count: ${tabCount}';
+    return 'Tab $tabIndex, tab count: $tabCount';
   }
 
   @override
