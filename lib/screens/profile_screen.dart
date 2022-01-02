@@ -27,8 +27,8 @@ AppColors colors=AppColors();
                 height: responsiveHeight * 0.35,
               ),
             ),
-            const Center(
-              child: Text('اسم الشخص'),
+             Center(
+              child: Text('${Provider.of<GetProfile>(context).profile.firstName??''} ${Provider.of<GetProfile>(context).profile.lastName??''}'),
             ),
             SizedBox(height: responsiveHeight*0.03,),
             buildElevatedButton(responsiveHeight, responsiveWidth, context,

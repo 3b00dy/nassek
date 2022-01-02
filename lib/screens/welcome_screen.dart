@@ -68,7 +68,7 @@ class WelcomeScreen extends StatelessWidget {
               onPressed: () => {Navigator.pushNamed(context, navigation)},
               child: Text(
                 label,
-                style: TextStyle(color: labelColor,fontSize: hieght*0.023),
+                style: TextStyle(color: labelColor,fontSize: width*0.04),
               ),
               style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(

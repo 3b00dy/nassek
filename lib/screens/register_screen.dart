@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:date_field/date_field.dart';
+
 import 'package:nassek/Provider_classes/auth_provider.dart';
 import 'package:nassek/api_models/loading_State.dart';
 import 'package:nassek/colors.dart';
@@ -79,12 +81,41 @@ class Register extends StatelessWidget {
                 buildPasswordFieldForm(context, 'كلمة المرور',
                     TextInputType.visiblePassword, 'password'),
 
-                buildTextFieldForm(
-                    context,
-                    'تأريخ الميلاد',
-                    TextInputType.datetime,
-                    'birthdate',
-                    Icon(Iconsax.calendar)),
+                Column(
+                  children: [
+                    DateTimeFormField(
+                      decoration: const InputDecoration(
+                        hintStyle: TextStyle(color: Colors.black45),
+                        errorStyle: TextStyle(color: Colors.redAccent),
+                        border: OutlineInputBorder(),
+                        suffixIcon: Icon(Iconsax.calendar),
+                        labelText: 'تأريخ الميلاد',
+                      ),
+                      mode: DateTimeFieldPickerMode.date,
+                      autovalidateMode: AutovalidateMode.always,
+                      validator: (e) => (e?.day ?? 0) == 1 ? 'Please not the first day' : null,
+                      onDateSelected: (DateTime value) {
+                        value.toIso8601String().split('T')[0];
+                        authValues['birthdate']=value.toIso8601String().split('T')[0];
+                        print(value.toIso8601String().split('T')[0]);
+                      },
+                    ),
+                    SizedBox(
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.02,
+                    ),
+                  ],
+                ),
+
+
+                // buildTextFieldForm(
+                //     context,
+                //     'تأريخ الميلاد',
+                //     TextInputType.datetime,
+                //     'birthdate',
+                //     Icon(Iconsax.calendar)),
                 buildTextFieldForm(context, 'الوزن', TextInputType.number,
                     'weight', Icon(Iconsax.weight)),
                 buildTextFieldForm(context, 'الطول', TextInputType.number,
@@ -177,14 +208,12 @@ class Register extends StatelessWidget {
                             MaterialStateProperty.all<Color>(colors.blue),
                           ),
                           onPressed: () async {
-                            await provider.signUp(authValues);
-
+                         await    provider.signUp(authValues);
                             // buildAlertDialog(context);
                             if (loadingState == LoadingState.loading) {
                               buildAlertDialog(context);
                             }
-                            else if (provider.statusCode == 422) {
-
+                            else if (provider.statusCode != 201) {
                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                   duration: Duration(seconds: 2),
                                   content: Text('يرجى ادخال معلومات صحيحة')));

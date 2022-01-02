@@ -36,7 +36,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences tokenValueSet = await SharedPreferences.getInstance();
 
-  token = tokenValueSet.getString('token');
+  token = tokenValueSet.getString('token')??'null';
+
   debugPrint('token=   ${token}');
 
   SystemChrome.setPreferredOrientations([
@@ -124,7 +125,8 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(fontFamily: 'android'),
-          initialRoute:  token=='null'?  '/': 'navigationBar',
+          //
+          initialRoute:token=='null'?  '/': 'navigationBar' ,
           routes: {
             '/': (context) => WelcomeScreen(),
             'login': (context) => Login(),

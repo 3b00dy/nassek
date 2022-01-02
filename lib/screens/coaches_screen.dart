@@ -22,51 +22,47 @@ class Coaches extends StatelessWidget {
     var responsiveWidth = MediaQuery.of(context).size.width;
     return SafeArea(
         child: Scaffold(
-            appBar: AppBar(
-              title: const Text('قائمة المدربين'),
-              centerTitle: true,
-              elevation: 0,
-              backgroundColor: colors.blue,
-            ),
-            body: RefreshIndicator(
-              onRefresh: () {
-                return Future.delayed(const Duration(seconds: 1), () {
-
-                  Provider.of<CoachesProvdier>(context,listen: false).fetchingCoaches();
-
-                });
-              },
-              child: Consumer<CoachesProvdier>(
-                builder: (context,coaches,_) {
-                  if( coaches.loadingState==LoadingState.idle){
-    return  Center(child: Container(),);
-    }else if(coaches.loadingState==LoadingState.loading)
-      {
-        return const Center(child: CircularProgressIndicator(),);
-      }
-                  else {
-                          return ListView.builder(
-                              itemCount: coaches.length,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    SizedBox(
-                                      height: responsiveHeight * 0.003,
-                                    ),
-                                    buildCoachesPadding(
-                                        context,
-                                        responsiveHeight,
-                                        responsiveWidth,
-                                        coaches.coachesModel![index].name,
-                                        coaches.coachesModel![index].description),
-                                  ],
-                                );
-                              });
-                        }
-                      })
-
-              ),
-            ));
+      appBar: AppBar(
+        title: const Text('قائمة المدربين'),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: colors.blue,
+      ),
+      body: RefreshIndicator(onRefresh: () {
+        return Future.delayed(const Duration(seconds: 1), () {
+          Provider.of<CoachesProvdier>(context, listen: false)
+              .fetchingCoaches();
+        });
+      }, child: Consumer<CoachesProvdier>(builder: (context, coaches, _) {
+        if (coaches.loadingState == LoadingState.idle) {
+          return Center(
+            child: Container(),
+          );
+        } else if (coaches.loadingState == LoadingState.loading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return ListView.builder(
+              itemCount: coaches.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: responsiveHeight * 0.003,
+                    ),
+                    buildCoachesPadding(
+                        context,
+                        responsiveHeight,
+                        responsiveWidth,
+                        coaches.coachesModel![index].name,
+                        coaches.coachesModel![index].description),
+                  ],
+                );
+              });
+        }
+      })),
+    ));
   }
 
   Padding buildCoachesPadding(context, double responsiveHeight,

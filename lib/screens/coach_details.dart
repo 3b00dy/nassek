@@ -88,7 +88,8 @@ class CoachDetails extends StatelessWidget {
             height: hieght * 0.09,
             child: ElevatedButton.icon(
               icon: const Icon(Iconsax.message),
-              onPressed: () => {Navigator.pushNamed(context, navigation)},
+              onPressed: () => {},
+
               style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(

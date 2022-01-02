@@ -3,6 +3,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:nassek/Provider_classes/daily_advice_provider.dart';
 import 'package:nassek/colors.dart';
 import 'package:nassek/urlClass.dart';
@@ -16,7 +18,27 @@ class DailyAdvices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    Widget loader(){
+      return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFFEBEBF4),
+              Color(0xFFF4F4F4),
+              Color(0xFFEBEBF4),
+            ],
+            stops: [
+              0.1,
+              0.3,
+              0.4,
+            ],
+            begin: Alignment(-1.0, -0.3),
+            end: Alignment(1.0, 0.3),
+            tileMode: TileMode.clamp,
+          )
+        ),
+      );
+    };
     // List<DailyAdvicesModle> _daily=Provider.of<DailyAdviceProvider>(context).dailyAdviceModel;
 // late Future;<DailyAdvicesModle>;
     var responsiveHeight = MediaQuery.of(context).size.height;
@@ -60,14 +82,22 @@ class DailyAdvices extends StatelessWidget {
                             leading: SizedBox(
                               height: responsiveHeight*0.2,
                               width: responsiveWidth*0.2,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                backgroundImage: NetworkImage(
-                                  '$baseUrl${dailyAdvice.dailyAdviceModel[index].image}',
+                              child:
+                    // CircleAvatar(
+                    //             backgroundColor: Colors.transparent,
+                    //             backgroundImage:
 
+                                CachedNetworkImage(
+                                  imageUrl: "$baseUrl${dailyAdvice.dailyAdviceModel[index].image}",
+                                  placeholder: (context, url) => loader(),
+                                  errorWidget: (context, url, error) => Icon(Icons.error),
                                 ),
-                              ),
-                            )),
+                      // NetworkImage(
+                      //   '$baseUrl${dailyAdvice.dailyAdviceModel[index].image}',
+                      //
+                      // ),
+                      // ),
+                    )),
                       ),
                     );
                   },

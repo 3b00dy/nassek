@@ -181,8 +181,10 @@ class Search extends StatelessWidget {
                       onPressed: () => {
 
                         mealCount.addFood(id, tag, mealCount.quantity),
+
                         Provider.of<DaysProvider>(context,listen: false).getDay(),
-                Provider.of<DaysProvider>(context,listen: false).refresh=true,
+                        context.read<DaysProvider>().refresh=true,
+                // Provider.of<DaysProvider>(context,listen: true).refresh=true,
                         Navigator.of(context).pushNamedAndRemoveUntil(
                             'navigationBar', (Route<dynamic> route) => false),
                         mealCount.quantity = 1,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nassek/Provider_classes/auth_provider.dart';
+import 'package:nassek/Provider_classes/days_provider.dart';
+import 'package:nassek/Provider_classes/get_profile.dart';
 import 'package:nassek/colors.dart';
 import 'package:provider/provider.dart';
 
@@ -21,21 +23,33 @@ class Login extends StatelessWidget {
           return SingleChildScrollView(
             child: Padding(
               padding:
-                  EdgeInsets.all(MediaQuery.of(context).size.height * 0.025),
+              EdgeInsets.all(MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.025),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
                     child: svg,
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    width: MediaQuery.of(context).size.width * 0.5,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.5,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width * 0.5,
                   ),
                   buildTextFieldForm(context, 'البريد الألكتروني',
                       TextInputType.emailAddress, false, 'email'),
                   buildTextFieldForm(context, 'كلمة المرور',
                       TextInputType.visiblePassword, true, 'password'),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.05,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.05,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -45,17 +59,23 @@ class Login extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize:
-                                MediaQuery.of(context).size.height * 0.022),
+                            MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.022),
                       ),
                       TextButton(
                           onPressed: () =>
-                              {Navigator.pushReplacementNamed(context, '/')},
+                          {Navigator.pushReplacementNamed(context, '/')},
                           child: Text(
                             'تسجيل',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize:
-                                    MediaQuery.of(context).size.height * 0.025),
+                                MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height * 0.025),
                           ))
                     ],
                   ),
@@ -63,8 +83,14 @@ class Login extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.07,
-                        width: MediaQuery.of(context).size.height * 0.26,
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height * 0.07,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .height * 0.26,
                         child: ElevatedButton(
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all<
@@ -72,15 +98,24 @@ class Login extends StatelessWidget {
                               borderRadius: BorderRadius.circular(14.0),
                             )),
                             backgroundColor:
-                                MaterialStateProperty.all<Color>(colors.blue),
+                            MaterialStateProperty.all<Color>(colors.blue),
                           ),
-                          onPressed: () => {
-                            debugPrint('test'),
-                            view.signIn(
-                                autheValues['email'], autheValues['password']),
-                            // view.setToken(),
+                          onPressed: () async {
+                            debugPrint('test');
+
+                           await view.signIn( autheValues['email'], autheValues['password']);
+                            if(await view.statusCode==200){
+                              await context.read<GetProfile>().getProfile();
+                              await context.read<DaysProvider>().getDay();
                             Navigator.pushReplacementNamed(
-                                context, 'navigationBar')
+                            context, 'navigationBar');
+                            }
+                            else {
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            duration: Duration(seconds: 2),
+                            content: Text('يرجى ادخال معلومات صحيحة')));
+
+                            }
                           },
                           child: const Text(
                             'تسجيل الدخول',
@@ -104,8 +139,14 @@ class Login extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.08,
-          width: MediaQuery.of(context).size.width * 0.90,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 0.08,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width * 0.90,
           child: TextFormField(
             keyboardType: type,
             onChanged: (val) {
@@ -116,23 +157,35 @@ class Login extends StatelessWidget {
               hintText: inputName,
               hintStyle: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: MediaQuery.of(context).size.width * 0.04),
+                  fontSize: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.04),
               fillColor: colors.white,
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                       color: colors.indicatorCyan,
-                      width: MediaQuery.of(context).size.width * 0.002),
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.002),
                   borderRadius: BorderRadius.circular(5)),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                       color: Colors.grey,
-                      width: MediaQuery.of(context).size.width * 0.002),
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.002),
                   borderRadius: BorderRadius.circular(15)),
             ),
           ),
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.02,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 0.02,
         ),
       ],
     );

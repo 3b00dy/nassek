@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nassek/colors.dart';
@@ -38,7 +39,14 @@ class AdvicePage extends StatelessWidget {
                     height: responsiveHeight * 0.25,
                     width: responsiveWidth * 0.99,
 
-                    child: Image.network(img,fit: BoxFit.cover,),
+                    child: CachedNetworkImage(
+                      imageUrl: img,fit: BoxFit.cover,
+                      placeholder: (context, url) => CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+
+
+
                   ),
                 ),
                 Row(

@@ -12,8 +12,6 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 import 'package:provider/provider.dart';
 
-
-
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
   AppColors colors = AppColors();
@@ -25,8 +23,7 @@ class Home extends StatelessWidget {
       body: Center(
         child: SingleChildScrollView(
           child: Consumer<DaysProvider>(
-            builder: (BuildContext context, value, Widget? child) {
-              // var date = value.day![value.len].date;
+            builder: (BuildContext context, value, child) {
               if (value.loadingState == LoadingState.idle) {
                 return Center(
                   child: CircularProgressIndicator(),
@@ -40,8 +37,11 @@ class Home extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                              '${value.day![value.len].date!.toIso8601String().split('T')[0]}'),
+                          value.len == -1
+                              ? Text(
+                                  '${DateTime.now().toIso8601String().split('T')[0]}')
+                              : Text(
+                                  '${value.day![value.len].date!.toIso8601String().split('T')[0]}'),
                           // Text('${Provider.of<GetAllDates>(context).printedDate}'),
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.1,
@@ -64,7 +64,7 @@ class Home extends StatelessWidget {
                             MediaQuery.of(context).size.height * 0.20,
                             colors.indicatorCyan,
                             'سعرة حرارية',
-                            value.day![value.len].totalCalories ?? 0.0),
+                            value.len==-1?0.0: value.day![value.len].totalCalories ?? 0.0),
                         IconButton(
                           icon: const Icon(Iconsax.arrow_circle_left),
                           onPressed: () {
@@ -84,7 +84,7 @@ class Home extends StatelessWidget {
                             MediaQuery.of(context).size.height * 0.15,
                             colors.purple,
                             'بروتين',
-                            value.day![value.len].totalProtein ?? 0.0),
+                            value.len==-1?0.0: value.day![value.len].totalProtein ?? 0.0),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.25,
                         ),
@@ -93,7 +93,7 @@ class Home extends StatelessWidget {
                             MediaQuery.of(context).size.height * 0.15,
                             colors.green,
                             'دهون',
-                            value.day![value.len].totalFat ?? 0.0),
+                            value.len==-1?0.0: value.day![value.len].totalFat ?? 0.0),
                       ],
                     ),
                     Row(
@@ -157,7 +157,6 @@ class Home extends StatelessWidget {
                 builder: (context) => Search(
                       tag: tagName,
                     )))
-
       },
       child: Container(
         height: MediaQuery.of(context).size.height * 0.1,
@@ -176,21 +175,22 @@ class Home extends StatelessWidget {
     );
   }
 
-  CircularPercentIndicator buildCircularPercentIndicator(
+  Widget buildCircularPercentIndicator(
       context, rad, progressColors, String text, percentage) {
-    return CircularPercentIndicator(
-      radius: rad,
-
-      animation: true,
-      animationDuration: 700,
-      lineWidth: 12.0,
-      percent: (percentage * 0.0001),
-      center: Text(
-        '$text ${percentage.toStringAsFixed(0)}',
-        style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.02),
+    return SizedBox(
+      child: CircularPercentIndicator(
+        radius: rad,
+        animation: true,
+        animationDuration: 700,
+        lineWidth: 12.0,
+        percent: (percentage * 0.0001),
+        center: Text(
+          '$text ${percentage.toStringAsFixed(0)}',
+          style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.02),
+        ),
+        progressColor: progressColors,
+        circularStrokeCap: CircularStrokeCap.round,
       ),
-      progressColor: progressColors,
-      circularStrokeCap: CircularStrokeCap.round,
     );
   }
 }
